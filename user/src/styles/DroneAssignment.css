@@ -1,0 +1,130 @@
+/* DroneAssignment.css or your global CSS file */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6; /* Tailwind gray-100 */
+}
+
+.modal {
+    position: fixed;
+    z-index: 1050; /* Higher z-index for React Portals or stacking contexts */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #9ca3af;
+    font-size: 1.875rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    background: none;
+    border: none;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #1f2937;
+}
+
+/* Re-using btn classes from index.html, ensure Tailwind is configured or define them */
+.btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-primary { background-color: #3b82f6; color: white; }
+.btn-primary:hover { background-color: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+.btn-secondary { background-color: #6b7280; color: white; }
+.btn-secondary:hover { background-color: #4b5563; }
+.btn-success { background-color: #10b981; color: white; } /* Green for Export */
+.btn-success:hover { background-color: #059669; }
+
+.form-input, .file-input-custom-style { /* Renamed .file-input to avoid conflicts if any */
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    margin-top: 0.25rem;
+    box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.05);
+}
+
+.form-input:focus, .file-input-custom-style:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.file-input-custom-style {
+    padding: 0.5rem;
+}
+
+.table-container { overflow-x: auto; }
+
+/* Flash message styling */
+.flash-message {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 0.875rem; /* text-sm */
+}
+.flash-success {
+  background-color: #d1fae5; /* bg-green-100 */
+  border: 1px solid #6ee7b7; /* border-green-400 */
+  color: #065f46; /* text-green-700 */
+}
+.flash-error {
+  background-color: #fee2e2; /* bg-red-100 */
+  border: 1px solid #fca5a5; /* border-red-400 */
+  color: #991b1b; /* text-red-700 */
+}
+.flash-warning {
+  background-color: #fef3c7; /* bg-yellow-100 */
+  border: 1px solid #fcd34d; /* border-yellow-400 */
+  color: #92400e; /* text-yellow-700 */
+}
+.flash-info {
+  background-color: #dbeafe; /* bg-blue-100 */
+  border: 1px solid #93c5fd; /* border-blue-400 */
+  color: #1e40af; /* text-blue-700 */
+}
+
+/* Ensure Tailwind base, components, and utilities are imported in your main CSS or JS entry point */
+/* @import 'tailwindcss/base'; */
+/* @import 'tailwindcss/components'; */
+/* @import 'tailwindcss/utilities'; */
+
+/* Styles for the original DroneAssignment part, assuming Tailwind is available */
+.bg-navbar { background-color: #1f2937; /* Example: Tailwind gray-800 */ }
+.bg-background { background-color: #f3f4f6; /* Example: Tailwind gray-100 */ }
+.text-text { color: #1f2937; /* Example: Tailwind gray-800 */ }
+.bg-secondary { background-color: #6b7280; /* Example: Tailwind gray-500 */ }
+/* .bg-primary is already defined */
+.bg-success { background-color: #10b981; /* Example: Tailwind green-500 */ }
+/* Add other custom colors if not directly using Tailwind classes like text-primary, etc. */

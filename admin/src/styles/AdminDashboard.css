@@ -1,0 +1,284 @@
+/* AdminDashboard.css - Interactive styling for the admin dashboard */
+
+/* General animations and transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(100, 100);
+    opacity: 0;
+  }
+}
+
+/* Main container animations */
+.w-full.h-screen.flex.flex-col.bg-slate-50 {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Navigation bar enhancements */
+nav.bg-slate-800 {
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav .text-blue-400 {
+  transition: color 0.3s ease;
+}
+
+nav .text-blue-400:hover {
+  color: #93c5fd; /* lighter blue on hover */
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+/* Button enhancements */
+button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+button:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+/* Sidebar button enhancements */
+.w-full.md-w-64 button {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.w-full.md-w-64 button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Active state for add buttons */
+.bg-green-500.hover-bg-green-600 {
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Map container enhancements */
+.leaflet-container {
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Marker enhancements */
+.leaflet-marker-icon {
+  transition: all 0.3s ease !important;
+}
+
+.leaflet-marker-icon:hover {
+  transform: scale(1.1) !important;
+  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+}
+
+/* Tooltip enhancements */
+.location-name-tooltip {
+  transition: all 0.3s ease;
+  background-color: rgba(30, 41, 59, 0.85) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: rgba(30, 41, 59, 0.85) !important;
+}
+
+/* Popup enhancements */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 16px !important;
+  line-height: 1.6 !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Custom editor popup enhancements */
+#editor-popup-container .bg-white,
+#warehouse-editor-popup-container .bg-white {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 12px !important;
+}
+
+/* Form input enhancements */
+input[type="text"],
+input[type="checkbox"] {
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* Loading overlay enhancements */
+.fixed.inset-0.bg-black.bg-opacity-50.flex.items-center.justify-center {
+  backdrop-filter: blur(4px);
+}
+
+.animate-spin {
+  border-color: #3b82f6;
+  border-right-color: transparent;
+}
+
+/* Notification enhancements */
+.notification {
+  animation: slideInUp 0.3s ease-out;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.notification.success {
+  border-left-color: #10b981;
+}
+
+.notification.error {
+  border-left-color: #ef4444;
+}
+
+.notification.info {
+  border-left-color: #3b82f6;
+}
+
+/* Undo popup enhancements */
+.fixed.bottom-16.left-1_2.transform.-translate-x-1_2 {
+  animation: slideInUp 0.3s ease-out;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* User location info box */
+.absolute.bottom-4.left-4.md-bottom-8.md-left-8.bg-white {
+  animation: fadeIn 0.5s ease-in-out;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.absolute.bottom-4.left-4.md-bottom-8.md-left-8.bg-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 20px -3px rgba(0, 0, 0, 0.15);
+}
+
+/* Table styling in warehouse popup */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+  background-color: #f8fafc;
+}
+
+th {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+  .w-full.md-w-64 {
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .notification {
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    transform: none;
+  }
+}

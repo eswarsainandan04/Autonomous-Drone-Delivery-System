@@ -1,0 +1,549 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #3b82f6;
+    --accent-color: #60a5fa;
+    --background-color: #f8fafc;
+    --text-color: #1e293b;
+    --navbar-color: #1e293b;
+    --sidebar-width: 300px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.drone-dashboard {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--background-color);
+}
+
+.navbar {
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--navbar-color);
+    color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-btn {
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    background: var(--secondary-color);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.dashboard-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.left-sidebar {
+    border-right: 1px solid #e2e8f0;
+}
+
+.map-container {
+    flex: 1;
+    position: relative;
+}
+
+#drone-map {
+    width: 100%;
+    height: 100%;
+}
+
+.section-header {
+    padding: 1rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.drone-controls, .mission-controls {
+    padding: 1rem;
+}
+
+.control-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.drone-list {
+    padding: 1rem;
+}
+
+.drone-item {
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.drone-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.drone-item.selected {
+    background: var(--primary-color);
+    color: white;
+}
+
+.drone-inactive {
+    opacity: 0.5;
+}
+
+.package-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    min-width: 300px;
+}
+
+.package-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.package-option {
+    padding: 1rem;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.package-option:hover {
+    border-color: var(--primary-color);
+    background: #f1f5f9;
+}
+
+.package-option.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.drone-info-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    min-width: 350px;
+}
+
+.drone-info-content {
+    margin: 1rem 0;
+}
+
+.info-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.close-info-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.close-info-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.drone-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.package-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.toggle-btn {
+    background: #22c55e;
+    color: white;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+}
+
+/* DDT marker styles */
+.ddt-marker {
+    background: none !important;
+}
+
+.ddt-point {
+    width: 30px;
+    height: 30px;
+    background: #3b82f6;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ddt-popup {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.ddt-popup h4 {
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+}
+
+.ddt-popup p {
+    margin: 0.25rem 0;
+    color: #64748b;
+}
+
+/* Warehouse marker styles */
+.warehouse-marker {
+    background: none !important;
+}
+
+.warehouse-point {
+    width: 40px;
+    height: 40px;
+    background: #1e293b;
+    border: 2px solid white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.warehouse-point-minimal {
+    width: 12px;
+    height: 12px;
+    background: #1e293b;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.warehouse-point i {
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.warehouse-point .warehouse-name {
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 0 4px;
+}
+
+/* Warehouse selector styles */
+.warehouse-selector-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    min-width: 350px;
+}
+
+.warehouse-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 1rem 0;
+}
+
+.warehouse-option {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.warehouse-option:hover {
+    border-color: var(--primary-color);
+    background: #f1f5f9;
+}
+
+.warehouse-option.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.warehouse-selector-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.warehouse-selector-actions button {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.warehouse-selector-actions .confirm-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.warehouse-selector-actions .cancel-btn {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.selected-warehouse {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.warehouse-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.change-warehouse-btn {
+    padding: 0.5rem 1rem;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.change-warehouse-btn:hover {
+    background: var(--primary-color);
+}
+
+/* Style for disabled add drone button */
+.control-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Drone marker styles */
+.drone-marker {
+    background: none !important;
+}
+
+.drone-point {
+    width: 30px;
+    height: 30px;
+    background: #22c55e;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.drone-point.inactive {
+    background: #94a3b8;
+}
+
+.drone-point i {
+    font-size: 16px;
+}
+
+.drone-popup {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.drone-popup h4 {
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+}
+
+.drone-popup p {
+    margin: 0.25rem 0;
+    color: #64748b;
+}
+
+.warehouse-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.warehouse-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.warehouse-location {
+    font-size: 0.8em;
+    color: #64748b;
+}
+
+.warehouse-option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 8px 0;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.warehouse-option:hover {
+    border-color: var(--primary-color);
+    background: #f1f5f9;
+}
+
+.warehouse-option.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.warehouse-option.selected .warehouse-name,
+.warehouse-option.selected .warehouse-location {
+    color: white;
+}
+
+/* Remove these styles */
+.right-sidebar,
+.mission-status,
+.weather-info,
+.drone-telemetry,
+#drone-info-btn,
+#start-mission-btn,
+#stop-mission-btn {
+    display: none;
+}
+
+/* Update the map container to use full width */
+.map-container {
+    flex: 1;
+    position: relative;
+} 

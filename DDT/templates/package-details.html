@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowFly - Package Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        .package-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .package-status.delivered {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .package-status.in-transit {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .package-status.pending {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .auto-logout-warning {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="package-container">
+            <div class="success-message">
+                🎉 NEST's Unlocked - Enjoy Your Package! 🎉
+            </div>
+            
+            <h2>Package Successfully Retrieved</h2>
+            <div class="package-info" id="package-info">
+                <!-- Package details will be loaded here -->
+            </div>
+            
+            <div class="actions">
+                <a href="{{ url_for('logout') }}" class="btn primary-btn">Complete & Logout</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const packageInfo = document.getElementById('package-info');
+
+            try {
+                const response = await fetch('/api/package-data');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch package data');
+                }
+
+                const data = await response.json();
+                const customer = data.customer;
+                const package = data.package;
+
+                // Display package information
+                packageInfo.innerHTML = `
+                    <div class="info-row">
+                        <label>Customer Name:</label>
+                        <span>${customer.customer_name || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>Email:</label>
+                        <span>${customer.mail_id || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>Package ID:</label>
+                        <span>${customer.package_id}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>Item Details:</label>
+                        <span>${package ? package.item_details : customer.item_details || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>Rack Number:</label>
+                        <span>${customer.rack || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>Retrieved At:</label>
+                        <span>${new Date().toLocaleString()}</span>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error fetching package data:', error);
+                packageInfo.innerHTML = `
+                    <div class="info-row">
+                        <label>Error:</label>
+                        <span>Unable to load package details. Please try again.</span>
+                    </div>
+                `;
+            }
+
+            // Auto logout after 2 minutes (extended since door is already opened)
+            const LOGOUT_TIMEOUT = 120000; // 2 minutes in milliseconds
+
+            let logoutTimer = setTimeout(() => {
+                window.location.href = "{{ url_for('logout') }}";
+            }, LOGOUT_TIMEOUT);
+
+            // Reset timer on user activity
+            function resetTimer() {
+                clearTimeout(logoutTimer);
+                logoutTimer = setTimeout(() => {
+                    window.location.href = "{{ url_for('logout') }}";
+                }, LOGOUT_TIMEOUT);
+            }
+
+            document.addEventListener('mousemove', resetTimer);
+            document.addEventListener('keypress', resetTimer);
+            document.addEventListener('click', resetTimer);
+            document.addEventListener('scroll', resetTimer);
+
+            // Add warning message when 15 seconds remain
+            setTimeout(() => {
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'auto-logout-warning';
+                warningDiv.textContent = 'Session will expire in 15 seconds...';
+                document.body.appendChild(warningDiv);
+                
+                setTimeout(() => {
+                    if (warningDiv.parentNode) {
+                        warningDiv.remove();
+                    }
+                }, 15000);
+            }, LOGOUT_TIMEOUT - 15000);
+        });
+    </script>
+</body>
+</html>

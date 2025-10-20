@@ -1,0 +1,3 @@
+@echo off
+echo Starting ShadowFly Drone Management System...
+npm start 

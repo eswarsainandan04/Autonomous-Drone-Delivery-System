@@ -1,0 +1,49 @@
+/* Import Tailwind base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for Leaflet-Geosearch bar using Tailwind classes */
+
+/* Target the main container of the search bar */
+.custom-geosearch-bar.leaflet-bar.leaflet-control {
+  @apply rounded-lg shadow-lg; /* Apply rounded corners and a shadow */
+}
+
+/* Target the search input field */
+.custom-geosearch-bar .geosearch-form input {
+  @apply px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 placeholder-gray-400;
+  min-width: 200px; /* Ensure a minimum width */
+}
+
+/* Target the search button (magnifying glass) */
+.custom-geosearch-bar .geosearch-form button {
+  @apply bg-blue-600 text-white p-2 rounded-r-lg hover:bg-blue-700 transition-colors;
+}
+
+/* Target the reset/clear button (x icon) */
+.custom-geosearch-bar .geosearch-form .reset {
+  @apply text-gray-500 hover:text-gray-700;
+}
+
+/* Target the search results list */
+.custom-geosearch-bar .results {
+  @apply bg-white rounded-lg shadow-xl mt-2 py-1; /* Add background, rounded corners, shadow, and padding */
+  max-height: 300px; /* Limit height and enable scrolling */
+  overflow-y: auto;
+}
+
+/* Target individual search result items */
+.custom-geosearch-bar .results > li {
+  @apply px-4 py-2 cursor-pointer hover:bg-blue-50 text-gray-700 transition-colors;
+}
+
+/* Style the selected search result (if any) */
+.custom-geosearch-bar .results > li.active {
+  @apply bg-blue-100 font-semibold text-blue-800;
+}
+
+/* Style the attribution */
+.custom-geosearch-bar .leaflet-control-geosearch.leaflet-control-geosearch-bar .title {
+  @apply text-sm text-gray-600;
+}

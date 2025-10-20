@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowFly - Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">ShadowFly</div>
+            <a href="{{ url_for('logout') }}" class="logout-btn" id="logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>Admin Dashboard - DDT Packages</h2>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Active Racks</h3>
+                    <p id="active-racks-count">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Dumps</h3>
+                    <p id="pending-dumps-count">0</p>
+                </div>
+            </div>
+
+            <!-- Regular Packages Table -->
+            <div class="package-list">
+                <h3>Active Rack Status</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rack Number</th>
+                            <th>Status</th>
+                            <th>Package ID</th>
+                            <th>OTP</th>
+                            <th>Lock Status</th>
+                            <th>Started At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="packages-table-body">
+                        <!-- Packages will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Dumped Packages Table -->
+            <div class="package-list dumped-packages" id="dumped-packages-section" style="display: none;">
+                <h3>Pending Dump Collection</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Package ID</th>
+                            <th>Status</th>
+                            <th>Rack Number</th>
+                            <th>Lock Status</th>
+                            <th>Started At</th>
+                            <th>Ended At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dumped-packages-table-body">
+                        <!-- Dumped packages will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+    let ddtData = null;
+    const unlockTimers = {};
+
+    // Load DDT data from backend
+    async function loadDDTData() {
+        try {
+            const response = await fetch('/api/ddt-data');
+            if (response.ok) {
+                ddtData = await response.json();
+                loadDashboard();
+            } else {
+                console.error('Failed to load DDT data');
+                showError('Failed to load DDT data');
+            }
+        } catch (error) {
+            console.error('Error loading DDT data:', error);
+            showError('Error loading DDT data');
+        }
+    }
+
+    function showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'flash-message error';
+        errorDiv.textContent = message;
+        document.querySelector('.dashboard-container').prepend(errorDiv);
+        setTimeout(() => errorDiv.remove(), 5000);
+    }
+
+    function loadDashboard() {
+        if (!ddtData) return;
+
+        // Convert DDT rack data to package format for display
+        const packages = [];
+        Object.entries(ddtData.rack_packages || {}).forEach(([rackKey, rackData]) => {
+            if (rackData.package_id) {
+                packages.push({
+                    package_id: rackData.package_id,
+                    rack_number: rackData.rack_number,
+                    otp: rackData.otp,
+                    status: 'occupied',
+                    is_locked: true,
+                    created_at: new Date().toISOString()
+                });
+            }
+        });
+
+        // Update stats
+        document.getElementById('active-racks-count').textContent = packages.length;
+        document.getElementById('pending-dumps-count').textContent = 0;
+
+        // Load packages table
+        const packagesTableBody = document.getElementById('packages-table-body');
+        packagesTableBody.innerHTML = '';
+
+        packages.forEach(pkg => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${pkg.rack_number}</td>
+                <td>
+                    <span class="status-badge occupied">Occupied</span>
+                </td>
+                <td>${pkg.package_id}</td>
+                <td>${pkg.otp || 'N/A'}</td>
+                <td>
+                    <span class="lock-status ${pkg.is_locked ? 'locked' : 'unlocked'}">
+                        ${pkg.is_locked ? "Locked" : "Unlocked"}
+                    </span>
+                </td>
+                <td>${formatDateTime(pkg.created_at)}</td>
+                <td>
+                    <button class="btn unlock-btn" data-package-id="${pkg.package_id}">
+                        ${pkg.is_locked ? "Unlock" : "Lock"}
+                    </button>
+                </td>
+            `;
+            packagesTableBody.appendChild(row);
+        });
+
+        // Add event listeners
+        addEventListeners();
+    }
+
+    function addEventListeners() {
+        // Add event listeners to all unlock buttons
+        document.querySelectorAll('.unlock-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const packageId = this.dataset.packageId;
+                handleUnlock(packageId);
+            });
+        });
+    }
+
+    function handleUnlock(packageId) {
+        const unlockBtn = document.querySelector(`button[data-package-id="${packageId}"]`);
+        
+        // Disable unlock button
+        unlockBtn.disabled = true;
+        unlockBtn.textContent = 'Wait 5s...';
+        
+        // Clear any existing timer
+        if (unlockTimers[packageId]) {
+            clearInterval(unlockTimers[packageId]);
+        }
+        
+        // Start the 5-second timer
+        let timeLeft = 5;
+        unlockTimers[packageId] = setInterval(() => {
+            timeLeft--;
+            
+            if (timeLeft > 0) {
+                unlockBtn.textContent = `Wait ${timeLeft}s...`;
+            } else {
+                clearInterval(unlockTimers[packageId]);
+                
+                // Simulate unlock success and reload
+                loadDDTData();
+            }
+        }, 1000);
+    }
+
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString();
+    }
+
+    // Initialize dashboard
+    await loadDDTData();
+});
+    </script>
+</body>
+</html>
